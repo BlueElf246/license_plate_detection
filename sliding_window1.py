@@ -55,8 +55,12 @@ def sliding_window(img,params,scale, y_start_stop=[None, None], cell_per_step=2)
 
 
             img_crop= cv2.resize(img[y_top:y_top+win_y,x_top:x_top+win_x],(win_x,win_y))
-            spatial_feature = get_feature_of_image(img_crop, hog_fea=False, spatial_fea=params['spatial_feat'], spatial_size=params['spatial_size'], color_fea=False)
-            color_feature   = get_feature_of_image(img_crop, hog_fea=False, spatial_fea=False, bins=params['hist_bins'], color_fea=params['hist_feat'])
+            spatial_feature=[]
+            color_feature=[]
+            if params['spatial_feat'] == True:
+                spatial_feature = get_feature_of_image(img_crop, hog_fea=False, spatial_fea=params['spatial_feat'], spatial_size=params['spatial_size'], color_fea=False)
+            if params['hist_feat'] == True:
+                color_feature   = get_feature_of_image(img_crop, hog_fea=False, spatial_fea=False, bins=params['hist_bins'], color_fea=params['hist_feat'])
             feature= np.concatenate((hog_f, color_feature, spatial_feature))
             scaled_feature=scaler.transform(np.array(feature).reshape(1,-1))
             prediction= svc.predict(scaled_feature)

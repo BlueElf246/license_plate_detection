@@ -5,8 +5,8 @@ import time
 import cv2
 params=load_classifier()
 import os
-os.chdir("/Users/datle/Desktop/license_plate_detection")
-img   = mpimg.imread('Cars0.png')
+os.chdir("/Users/datle/Desktop/license_plate_detection/dataset_test/images")
+img   = mpimg.imread('Cars1.png')
 img1  = img.copy()
 img2  = img.copy()
 start= time.time()
@@ -17,7 +17,7 @@ heatmap=draw_heatmap(bbox, img)
 heatmap_thresh= apply_threshhold(heatmap, thresh=win_size['thresh'])
 bbox_heatmap= get_labeled(heatmap_thresh)
 
-heatmap_thresh, heatmap= product_heat_and_label_pic(heatmap, heatmap_thresh)
+#heatmap_thresh, heatmap= product_heat_and_label_pic(heatmap, heatmap_thresh)
 
 img   =draw(img, bbox)
 img1  =draw(img1, bbox_nms)

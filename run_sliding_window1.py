@@ -3,10 +3,16 @@ import numpy as np
 from sliding_window1 import *
 import time
 import cv2
+import matplotlib.pyplot as plt
 params=load_classifier()
 import os
 os.chdir("/Users/datle/Desktop/license_plate_detection/dataset_test/images")
-img   = mpimg.imread('Cars1.png')
+img   = cv2.imread('Cars13.png', cv2.IMREAD_COLOR)
+img= cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+# if img.shape[2]>3:
+#     img=img[:,:,0:3]
+# img = img.astype(np.float32)/255
+print(img.shape)
 img1  = img.copy()
 img2  = img.copy()
 start= time.time()
@@ -17,7 +23,7 @@ heatmap=draw_heatmap(bbox, img)
 heatmap_thresh= apply_threshhold(heatmap, thresh=win_size['thresh'])
 bbox_heatmap= get_labeled(heatmap_thresh)
 
-#heatmap_thresh, heatmap= product_heat_and_label_pic(heatmap, heatmap_thresh)
+heatmap_thresh, heatmap= product_heat_and_label_pic(heatmap, heatmap_thresh)
 
 img   =draw(img, bbox)
 img1  =draw(img1, bbox_nms)

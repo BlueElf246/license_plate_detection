@@ -1,5 +1,6 @@
 from load_data import *
 from setting import params
+import matplotlib.image as mpimg
 os.chdir("/Users/datle/Desktop/license_plate_detection")
 car, non_car= load_dataset()
 # car=car[:3]

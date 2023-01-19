@@ -5,7 +5,7 @@ import pickle
 from setting  import win_size
 from imutils.object_detection import  non_max_suppression
 import matplotlib.image as mpimg
-from scipy.ndimage.measurements import label
+from scipy.ndimage import label
 def load_classifier():
     d= pickle.load(open('lp_detect.p', 'rb'))
     return d
@@ -75,30 +75,13 @@ def find_car_multi_scale(img,params, win_size):
     bboxes=[]
     print('number of scale use:', len(win_size['use_scale']))
     win_scale=win_size['use_scale']
-    if 0 in win_scale:
-        print('yes')
-        y_start=win_size['scale_0'][0]
-        y_stop=win_size['scale_0'][1]
-        scale_0=win_size['scale_0'][2]
-        bboxes.append(sliding_window(img, params=params, y_start_stop=[y_start,y_stop], cell_per_step=2, scale=scale_0))
-    if 1 in win_scale:
-        y_start = win_size['scale_1'][0]
-        y_stop = win_size['scale_1'][1]
-        scale_0 = win_size['scale_1'][2]
-        bboxes.append(
-            sliding_window(img, params=params, y_start_stop=[y_start, y_stop], cell_per_step=2, scale=scale_0))
-    if 2 in win_scale:
-        y_start = win_size['scale_2'][0]
-        y_stop = win_size['scale_2'][1]
-        scale_0 = win_size['scale_2'][2]
-        bboxes.append(
-            sliding_window(img, params=params, y_start_stop=[y_start, y_stop], cell_per_step=2, scale=scale_0))
-    if 3 in win_scale:
-        y_start = win_size['scale_3'][0]
-        y_stop = win_size['scale_3'][1]
-        scale_0 = win_size['scale_3'][2]
-        bboxes.append(
-            sliding_window(img, params=params, y_start_stop=[y_start, y_stop], cell_per_step=2, scale=scale_0))
+    for x in range(11):
+        if x in win_scale:
+            print('yes')
+            y_start=win_size[f'scale_{x}'][0]
+            y_stop=win_size[f'scale_{x}'][1]
+            scale_0=win_size[f'scale_{x}'][2]
+            bboxes.append(sliding_window(img, params=params, y_start_stop=[y_start,y_stop], cell_per_step=2, scale=scale_0))
     bboxes= np.concatenate(bboxes)
     print(len(bboxes))
     return bboxes,non_max_suppression(np.array(bboxes),probs=None, overlapThresh=win_size['overlap_thresh'])
@@ -114,7 +97,7 @@ def draw_heatmap(bbox,img):
 def apply_threshhold(heatmap,thresh=3):
     heatmap=np.copy(heatmap)
     heatmap[heatmap< thresh]=0
-    heatmap= np.clip(heatmap,0,255)
+    heatmap= np.clip(heatmap,0,254)
     return heatmap
 def get_labeled(heatmap_thresh):
     labels= label(heatmap_thresh)
@@ -135,7 +118,7 @@ def get_labeled(heatmap_thresh):
 def product_heat_and_label_pic(heatmap, labels):
     # prepare RGB heatmap image from float32 heatmap channel
     img_heatmap = (np.copy(heatmap) / np.max(heatmap) * 255.).astype(np.uint8)
-    img_heatmap = cv2.applyColorMap(img_heatmap, colormap=cv2.COLORMAP_HOT)
+    img_heatmap = cv2.applyColorMap(img_heatmap, colormap=cv2.COLORMAP_JET)
     img_heatmap = cv2.cvtColor(img_heatmap, cv2.COLOR_BGR2RGB)
 
     # prepare RGB labels image from float32 labels channel

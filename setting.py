@@ -10,19 +10,14 @@ params['spatial_feat'] = False  # Spatial features on or off
 params['hist_feat'] = False  # Histogram features on or off
 params['hog_feat'] = True  # HOG features on or off
 params['size_of_window']=(108,36,3)
-params['test_size']=0.8
+params['test_size']=0.95
 
 
 win_size={}
-scale1=0.5
-scale2= scale1+0.425
-scale3= scale2+0.425
-scale4= scale3+0.425
-win_size['scale_0']=(0,1000,scale1)
-win_size['scale_1']=(0,1000,scale2)
-win_size['scale_2']=(0,1000,scale3)
-win_size['scale_3']=(0,1000,scale4)
-win_size['thresh']=40
+s=[0.45, 0.611, 0.772, 0.933, 1.094, 1.255, 1.416, 1.577, 1.738, 1.899, 2.06]
+for x,y in enumerate(s):
+    win_size[f'scale_{x}']=(0,1000,y)
+win_size['thresh']=100
 win_size['overlap_thresh']= 0.1
 # 0.5, 1.3
-win_size['use_scale']=(0,)
+win_size['use_scale']=(0,1,2,3,4,5)

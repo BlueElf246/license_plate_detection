@@ -9,13 +9,30 @@ from sklearn.model_selection import train_test_split
 from sklearn.svm import LinearSVC
 from setting import params
 import pickle
-os.chdir("/Users/datle/Desktop/license_plate_detection")
 def load_dataset():
+    os.chdir("/Users/datle/Desktop/license_plate_detection")
     car= glob.glob("./dataset/vehicles/*.png")
-    non_car= glob.glob("./dataset/non-vehicles/GTI_Far/*.png")
-    non_car+= glob.glob("./dataset/non-vehicles/GTI_Left/*.png")
-    non_car += glob.glob("./dataset/non-vehicles/GTI_Right/*.png")
-    non_car += glob.glob("./dataset/non-vehicles/GTI_MiddleClose/*.png")
+
+    os.chdir("/Users/datle/Desktop/nhan_dien_xe")
+    non_car= glob.glob("./natural_images/fruit/*.jpg")
+    non_car+= glob.glob("./natural_images/airplane/*.jpg")
+    non_car+= glob.glob("./natural_images/cat/*.jpg")
+    non_car+= glob.glob("./natural_images/dog/*.jpg")
+    non_car += glob.glob("./natural_images/flower/*.jpg")
+    non_car += glob.glob("./natural_images/motorbike/*.jpg")
+    non_car += glob.glob("./natural_images/person/*.jpg")
+    non_car += glob.glob("./natural_images/car/*.jpg")
+    # non_car= glob.glob("./dataset/non-vehicles/GTI_Far/*.png")
+    # non_car+= glob.glob("./dataset/non-vehicles/GTI_Left/*.png")
+    # non_car += glob.glob("./dataset/non-vehicles/GTI_Right/*.png")
+    # non_car += glob.glob("./dataset/non-vehicles/GTI_MiddleClose/*.png")
+    #
+    # non_car += glob.glob("./dataset/non-vehicles/External/Air intake1/*.jpg")
+    # non_car += glob.glob("./dataset/non-vehicles/External/Fog light1/*.jpg")
+    # non_car += glob.glob("./dataset/non-vehicles/External/Headlight1/*.jpg")
+    # non_car += glob.glob("./dataset/non-vehicles/External/Tail light1/*.jpg")
+    #
+    # non_car += glob.glob("./dataset/non-vehicles/cars_train/*.jpg")
 
     return car, non_car
 def color_hist(img,bins ):
@@ -61,7 +78,8 @@ def change_color_space(img,colorspace):
 def extract_feature(dataset, color_space):
     dataset_feature=[]
     for x in dataset:
-        img=mpimg.imread(x)
+        img=cv2.imread(x, cv2.IMREAD_COLOR)
+        img= cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img_resized= cv2.resize(img,(params['size_of_window'][0],params['size_of_window'][1]))
         feature=get_feature_of_image(img_resized, orient=params['orient'], pix_per_cell=params['pix_per_cell'], cell_per_block=params['cell_per_block'],hog_fea=params['hog_feat'],
                                      spatial_size=params['spatial_size'], spatial_fea=params['spatial_feat'],bins=params['hist_bins'], color_fea=params['hist_feat'],

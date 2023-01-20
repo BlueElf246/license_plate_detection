@@ -7,7 +7,8 @@ import matplotlib.pyplot as plt
 params=load_classifier()
 import os
 os.chdir("/Users/datle/Desktop/license_plate_detection/dataset_test/images")
-img   = cv2.imread('Cars13.png', cv2.IMREAD_COLOR)
+img   = cv2.imread('Cars7.png', cv2.IMREAD_COLOR)
+#41, 85
 img= cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 # if img.shape[2]>3:
 #     img=img[:,:,0:3]

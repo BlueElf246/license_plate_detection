@@ -11,12 +11,13 @@ imgs=[]
 params= load_classifier()
 data_test= glob.glob("dataset_test/images/*.png")
 for img in data_test:
-    i= mpimg.imread(img)
+    i= cv2.imread(img, cv2.IMREAD_COLOR)
+    i= cv2.cvtColor(i, cv2.COLOR_BGR2RGB)
     name=img.split('/')
     imgs.append((name[-1],i))
 os.chdir("/Users/datle/Desktop/license_plate_detection/result")
 text= open('text.txt','a')
-for img in imgs[:2]:
+for img in imgs[:50]:
     bbox, bbox_nms= find_car_multi_scale(img[1],params, win_size)
     im= img[1].copy()
     heatmap = draw_heatmap(bbox, img[1])
